@@ -25,9 +25,24 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  @Get('roots')
+  findRoots() {
+    return this.categoriesService.findRoots();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(id);
+  }
+
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.categoriesService.findBySlug(slug);
+  }
+
+  @Get(':id/children')
+  findChildren(@Param('id') id: string) {
+    return this.categoriesService.findChildren(id);
   }
 
   @Patch()

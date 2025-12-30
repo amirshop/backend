@@ -2,7 +2,7 @@ import { createZodDto } from 'nestjs-zod';
 import { createProductSchema } from './create-product.dto';
 import { z } from 'zod';
 
-export const updateProductSchema = createProductSchema.extend({
+export const updateProductSchema = createProductSchema.partial().extend({
   id: z.uuid(),
 });
 

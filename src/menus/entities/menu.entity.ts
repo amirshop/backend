@@ -2,19 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from 'typeorm';
-import { Product } from '../../products/entities/product.entity';
 
 @Entity({
-  name: 'categories',
+  name: 'menus',
 })
-export class Category {
+export class Menu {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,21 +21,35 @@ export class Category {
     length: 255,
     nullable: false,
   })
-  name: string;
+  title: string;
 
   @Column({
     type: 'varchar',
-    length: 255,
+    length: 100,
     nullable: false,
-    unique: true,
   })
-  slug: string;
+  location: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
+    length: 500,
     nullable: true,
   })
-  description: string | null;
+  link: string | null;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    default: 'internal',
+  })
+  linkType: string;
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
+  icon: string | null;
 
   @Column({
     type: 'varchar',
@@ -47,16 +59,22 @@ export class Category {
   image: string | null;
 
   @Column({
+    type: 'int',
+    default: 0,
+  })
+  sortOrder: number;
+
+  @Column({
     type: 'boolean',
     default: true,
   })
   isActive: boolean;
 
   @Column({
-    type: 'int',
-    default: 0,
+    type: 'boolean',
+    default: false,
   })
-  sortOrder: number;
+  openInNewTab: boolean;
 
   @Column({
     type: 'uuid',
@@ -64,18 +82,15 @@ export class Category {
   })
   parentId: string | null;
 
-  @ManyToOne(() => Category, (category) => category.children, {
+  @ManyToOne(() => Menu, (menu) => menu.children, {
     nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'parentId' })
-  parent: Category | null;
+  parent: Menu | null;
 
-  @OneToMany(() => Category, (category) => category.parent)
-  children: Category[];
-
-  @ManyToMany(() => Product, (product) => product.categories)
-  products: Product[];
+  @OneToMany(() => Menu, (menu) => menu.parent)
+  children: Menu[];
 
   @CreateDateColumn()
   createdAt: Date;

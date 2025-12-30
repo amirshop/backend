@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePermissionDto } from './create-permission.dto';
+import { createZodDto } from 'nestjs-zod';
+import { createPermissionSchema } from './create-permission.dto';
+import { z } from 'zod';
 
-export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {}
+export const updatePermissionSchema = createPermissionSchema.partial().extend({
+  id: z.uuid(),
+});
+
+export class UpdatePermissionDto extends createZodDto(updatePermissionSchema) {}

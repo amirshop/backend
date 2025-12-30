@@ -9,6 +9,10 @@ export const createCategorySchema = z.object({
     .min(3, 'توضیحات باید حداقل ۳ کاراکتر باشد')
     .optional()
     .nullable(),
+  image: z.string().max(500).optional().nullable(),
+  isActive: z.boolean().default(true),
+  sortOrder: z.number().int().min(0).default(0),
+  parentId: z.uuid().optional().nullable(),
 });
 
 export class CreateCategoryDto extends createZodDto(createCategorySchema) {}
